@@ -12,7 +12,7 @@ public static void main(String args[]){
 	   System.out.println("The highest frequency sequence is " + "\"" + testCase1 + "\"" + ", occuring " + count + " times.");
 //	   String testCase2 = (mostfrequent("aataaaab",1000)); // make sure exception message is working
 	   System.out.println(count);
-       String testCase3 = (mostfrequent("bbcctt",2)); // handles tie cases
+       String testCase3 = (mostfrequent("aaccaatt",2)); // handles tie cases
        System.out.println("The highest frequency sequence is " + "\"" + testCase3 + "\"" + ", occuring " + count + " times.");
 } // end main
 	
@@ -23,7 +23,7 @@ if (k > text.length() || k <= 0){
 	throw new IllegalArgumentException("Sequence length must be an integer between 1 and text length");
 } // end if
 
-String word, block, mostWord = new String("");
+String word, block = null, mostWord = new String("");
 
 for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "slices" of first k-size sequence 
 	word = text.substring(p,k+p); // takes sequence as a template
@@ -32,8 +32,7 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
 	// debugging messages
 	System.out.println(word);
 	System.out.println("STARTING INNER LOOP");
-	
-	
+
 	for (int i = 0; i < text.length()-k+1; i++){
        block = text.substring(i, i+k); // parses text in chunks of size k
        // debug message
@@ -46,19 +45,19 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
     	   innerCount ++; // increments when "word" finds matches, min. value 1 for when word and block coincide
     	   i += k-1; // VERY IMPORTANT- skips to end of block, i.e., prevents "aaaa" being counted as 3 instances when k=2
        } // end if
-  
-    if (innerCount > count){  
-    	count = innerCount;
-    	mostWord = block;
-    } // end if
     
-	} // end for
+       if (innerCount > count){  
+       count = innerCount; // writes over count when a higher frequency sequence is encountered
+       mostWord = block; // writes over the the most frequent "word"
+       innerCount = 0;
+       } // end if
+	} // end for 
+       
+	if (innerCount == count && !block.equals(mostWord) && count > 1){
+ 	   mostWord += block;
+	   } // end if
     innerCount = 0;
-    
-    // debug message
-    System.out.println("CLOSING INNER LOOP"); 
-    
-    
+   
 } // end for
 return mostWord;
 } // end mostfrequent
