@@ -7,6 +7,15 @@ public class part1{
 private static int count = 0;
 
 public static void main(String args[]){
+	
+	   /* to test runtime
+	   long startTime = System.nanoTime();
+	   String testRunTime = (mostfrequent("variablestringlength",2));
+	   long endTime   = System.nanoTime();
+	   long totalTime = endTime - startTime;
+	   System.out.println(totalTime+ " nanoseconds");
+	   */
+	
 	   String testCase1 = (mostfrequent("aataaaab",2)); // make sure count does not overlap @ aaaa
 	   System.out.print(testCase1);
        String testCase2 = (mostfrequent("aabbccbbaacc",2)); // handles tie cases
@@ -33,6 +42,7 @@ public static void main(String args[]){
 	   } // end catch	   
 	   
 	   System.out.println(mostfrequent(input,4)); // handles files	
+	   
 } // end main
 	
 public static String mostfrequent(String text, int k){ 
@@ -92,8 +102,10 @@ innerCount = 0; // resets match counter
 if (count == 1) // case for no-repeat sequences
 	return ("The sequence has no repeat elements.\n");
 
-if (finalWord.length() == k)
-	return ("The highest frequency sequence is " + "\"" + finalWord + "\"" + ", occuring " + count + " times." + "\n");
+if (finalWord.length() == k) {
+	System.out.print("The highest frequency sequence is " + "\"" + finalWord + "\"" + ", occurring " + count + " times." + "\n");
+    return "";
+    } // end if
 else {
 	System.out.print("The highest frequency sequences are ");
 	for (int i = 0; i < finalWord.length()/k - 1; i++){ // print formatting
@@ -101,12 +113,12 @@ else {
 	} // end for
 	
 	if (finalWord.length()/k > 2){ // "each"
-	   System.out.print("and " + "\"" + finalWord.substring(finalWord.length()-k,finalWord.length()) + "\"" + ", each occuring " + count + " times." + "\n");
+	   System.out.print("and " + "\"" + finalWord.substring(finalWord.length()-k,finalWord.length()) + "\"" + ", each occurring " + count + " times." + "\n");
 	return(""); 
 	} // end if 
 	
 	else // "both"
-	   System.out.print("and " + "\"" + finalWord.substring(finalWord.length()-k,finalWord.length()) + "\"" + ", both occuring " + count + " times." + "\n");
+	   System.out.print("and " + "\"" + finalWord.substring(finalWord.length()-k,finalWord.length()) + "\"" + ", both occurring " + count + " times." + "\n");
 	return("");
 } // end else
 } // end mostfrequent
