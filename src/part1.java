@@ -1,7 +1,6 @@
 
 import java.io.*;
 import java.util.Scanner;
-//import java.lang.Throwable;
 
 public class part1{
 
@@ -10,13 +9,28 @@ private static int count = 0;
 public static void main(String args[]){
 	   String testCase1 = (mostfrequent("aataaaab",2)); // make sure count does not overlap @ aaaa
 	   System.out.print(testCase1);
-//	   String testCase2 = (mostfrequent("aataaaab",1000)); // make sure exception message is working
        String testCase2 = (mostfrequent("aabbccbbaacc",2)); // handles tie cases
        System.out.print(testCase2);
        String testCase3 = (mostfrequent("abababab",3)); // handles complex tie cases (overlapping "aba" and "bab")
        System.out.print(testCase3);
        String testCase4 = (mostfrequent("hqwxyz",3)); // handles sequences with no repeats
        System.out.print(testCase4);
+//	   String testCase5 = (mostfrequent("aataaaab",1000)); // make sure exception message is working
+//	   System.out.print(testCase5);
+       
+       String input = "";
+	   File text = new File("example.txt");
+	   try {
+	      Scanner s = new Scanner(text);
+		  while(s.hasNextLine()) {
+			 input = s.nextLine();
+		  } // end while
+	   } // end try
+	   catch (FileNotFoundException e) {
+		e.printStackTrace();
+	   } // end catch	   
+	   
+	   System.out.println(mostfrequent(input,4));	
 } // end main
 	
 public static String mostfrequent(String text, int k){
@@ -73,7 +87,7 @@ innerCount = 0; // resets match counter
 } // end for
 
 if (count == 1) // case for no-repeat sequences
-	return ("no repetitive sequences found");
+	return ("The sequence has no repeat elements.\n");
 
 if (finalWord.length() == k)
 	return ("The highest frequency sequence is " + "\"" + finalWord + "\"" + ", occuring " + count + " times." + "\n");
