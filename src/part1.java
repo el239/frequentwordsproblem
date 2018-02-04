@@ -15,11 +15,13 @@ public static void main(String args[]){
        System.out.print(testCase3);
        String testCase4 = (mostfrequent("hqwxyz",3)); // handles sequences with no repeats
        System.out.print(testCase4);
-//	   String testCase5 = (mostfrequent("aataaaab",1000)); // make sure exception message is working
-//	   System.out.print(testCase5);
+       String testCase5 = (mostfrequent("aaaaaaaa",4)); // handles pure repeat sequence
+       System.out.print(testCase5);
+//	   String errorCase = (mostfrequent("aataaaab",1000)); // make sure exception message is working
+//	   System.out.print(errorCase);
        
        String input = "";
-	   File text = new File("example.txt");
+	   File text = new File("example.txt"); // file must be present in same directory or given with specified file path
 	   try {
 	      Scanner s = new Scanner(text);
 		  while(s.hasNextLine()) {
@@ -30,16 +32,16 @@ public static void main(String args[]){
 		e.printStackTrace();
 	   } // end catch	   
 	   
-	   System.out.println(mostfrequent(input,4));	
+	   System.out.println(mostfrequent(input,4)); // handles files	
 } // end main
 	
-public static String mostfrequent(String text, int k){
+public static String mostfrequent(String text, int k){ 
 
 count = 0;
 String word, block = null, mostWord = new String("");
 String finalWord = new String("");
 
-if (k > text.length() || k <= 0)
+if (k > text.length() || k <= 0) // precondition violated
 	throw new IllegalArgumentException("Sequence length must be an integer between 1 and text length");
 
 for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "slices" of first k-size sequence 
@@ -60,14 +62,15 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
     	   if (innerCount > count){  
                count = innerCount; // writes over count when a higher frequency sequence is encountered
                mostWord = block; // writes over the the most frequent "word"
-               if (finalWord.length() == 0){ // sets initial final word
+               if (finalWord.length() == 0 && count > 1){ // sets initial final word
             	   finalWord = mostWord;
                } // end if
            } // end if
     		
-    		if (innerCount == count && !block.equals(finalWord.substring(finalWord.length()-k, finalWord.length()))){
+    	    // checks for repeats in "finalWord" before appending
+    		if (innerCount == count && innerCount > 1 && !block.equals(finalWord.substring(finalWord.length()-k, finalWord.length()))){
     		   int j;
-    		   int appendCount = 0;
+    		   int appendCount = 0; // marks repeats
     		   for (j = 0; j < finalWord.length()/k; j++) {
     			   if (block.equals(finalWord.substring(j*k,j*k+k))) { // checks for repeats in final word
     				   appendCount++;
@@ -75,7 +78,7 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
     		   } // end for
     		   
     			   if (appendCount == 0){
-    	 	       finalWord += block;
+    	 	       finalWord += block; // appends tie cases, if not already in "finalWord"
     			   } // end if
     		       appendCount = 0;
    		    } // end if   
