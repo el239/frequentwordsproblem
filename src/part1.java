@@ -8,12 +8,14 @@ public class part1{
 private static int count = 0;
 
 public static void main(String args[]){
-	   String testCase1 = (mostfrequent("aataaaab",2)); // make sure count is not overlapped @ aaaa
+	   String testCase1 = (mostfrequent("aataaaab",2)); // make sure count does not overlap @ aaaa
 	   System.out.print(testCase1);
 //	   String testCase2 = (mostfrequent("aataaaab",1000)); // make sure exception message is working
-       String testCase3 = (mostfrequent("aabbccbbaacc",2)); // handles tie cases !!!!!!!!!!! not working
+       String testCase2 = (mostfrequent("aabbccbbaacc",2)); // handles tie cases
+       System.out.print(testCase2);
+       String testCase3 = (mostfrequent("abababab",3)); // handles complex tie cases (overlapping "aba" and "bab")
        System.out.print(testCase3);
-       String testCase4 = (mostfrequent("abababab",3)); // handles complex tie cases (overlapping "aba" and "bab")
+       String testCase4 = (mostfrequent("hqwxyz",3)); // handles sequences with no repeats
        System.out.print(testCase4);
 } // end main
 	
@@ -30,10 +32,6 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
 	word = text.substring(p,k+p); // takes sequence as a template
 	int innerCount = 0;
 	
-	// debugging messages
-//	System.out.println(word);
-//	System.out.println("STARTING INNER LOOP");
-
 	for (int i = 0; i < text.length()-k+1; i++){
        block = text.substring(i,i+k); // chops text in chunks of size k
        if (block.equals(word)){
@@ -48,23 +46,30 @@ for (int p = 0; p < text.length()-k+1; p++){ // increments through k number of "
     	   if (innerCount > count){  
                count = innerCount; // writes over count when a higher frequency sequence is encountered
                mostWord = block; // writes over the the most frequent "word"
-               innerCount = 0;
-               if (finalWord.length() == 0) // sets initial final word
+               if (finalWord.length() == 0){ // sets initial final word
             	   finalWord = mostWord;
                } // end if
+           } // end if
+    		
+    		if (innerCount == count && !block.equals(finalWord.substring(finalWord.length()-k, finalWord.length()))){
+    		   int j;
+    		   int appendCount = 0;
+    		   for (j = 0; j < finalWord.length()/k; j++) {
+    			   if (block.equals(finalWord.substring(j*k,j*k+k))) { // checks for repeats in final word
+    				   appendCount++;
+    		       } // end if
+    		   } // end for
+    		   
+    			   if (appendCount == 0){
+    	 	       finalWord += block;
+    			   } // end if
+    		       appendCount = 0;
+   		    } // end if   
        } // end if
 	} // end for 
+	
+innerCount = 0; // resets match counter
     
-	/* debug messages
-	System.out.println("THE MOST WORD IS: " + mostWord);
-	System.out.println("THE FINAL WORD IS: " + finalWord);
-	*/
-    
-	// for ties in frequency; ensures the following "winners" are not already collected in finalWord, then appends to it
-	if (innerCount == count && !mostWord.equals(finalWord.substring(finalWord.length()-k, finalWord.length())) && count > 1){
- 	   finalWord += mostWord;
-	   } // end if
-    innerCount = 0;
 } // end for
 
 if (count == 1) // case for no-repeat sequences
@@ -87,6 +92,6 @@ else {
 	   System.out.print("and " + "\"" + finalWord.substring(finalWord.length()-k,finalWord.length()) + "\"" + ", both occuring " + count + " times." + "\n");
 	return("");
 } // end else
-} // mostfrequent
+} // end mostfrequent
 } // end class
 
